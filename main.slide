@@ -1,5 +1,5 @@
 Avoid a race condition
-Tech Talk
+Oct / 4 / 2016
 Tags: golang, server
 
 Yoshiki Nakagawa
@@ -21,6 +21,24 @@ Tech
 - Golang
 - Middleware
 - AWS
+
+Blog
+
+- [[http://esola.co][esola.co]]
+
+* Presentation
+
+- Go Conference 2016 Spring
+
+[[http://go-talks.appspot.com/github.com/yyoshiki41/go-sever-requirements/main.slide][Requirements for Go server]]
+
+- Mackerel Meetup #6 Tokyo
+
+[[http://go-talks.appspot.com/github.com/yyoshiki41/develop-mackerel-plugin-aws-sqs/main.slide][Develop mackerel-plugin-aws-sqs]]
+
+- Go Conference 2015 Winter
+
+[[http://go-talks.appspot.com/github.com/yyoshiki41/go-graceful-upgrade/main.slide][Graceful Upgrade for Go App]]
 
 * Introduction
 
