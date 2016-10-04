@@ -134,7 +134,7 @@ _c.f._The_Go_Programming_Language_
 
 👽 👽 👽
 
-_like._Bank_amount_exapmles_
+_e.g.)._Bank_amount_exapmles_
 
 * Protect primitive variable
 
@@ -272,4 +272,10 @@ See _"Protect_primitive_variable"_.
 
 * Race on loop counter
 
+Don't forget to capture interation variables.
+
 * Accidentally shared variable
+
+Check the shadowed variables.
+
+[[http://www.qureet.com/blog/golang-beartrap/][The Go Beartrap Lying in the Shadows]]
