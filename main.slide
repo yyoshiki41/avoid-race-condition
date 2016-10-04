@@ -1,0 +1,225 @@
+Avoid a race condition
+Tech Talk
+Tags: golang, server
+
+Yoshiki Nakagawa
+@yyoshiki41
+
+https://github.com/yyoshiki41
+[[http://esola.co][esola.co]]
+
+* AboutMe
+
+[[https://github.com/yyoshiki41][@yyoshiki41]]
+
+Yoshiki Nakagawa
+Infrastructure Engineer, pairs Division
+eureka, Inc.
+
+Tech
+
+- Golang
+- Middleware
+- AWS
+
+* Introduction
+
+* A minimal HTTP server
+
+it's easy 😊
+
+.code -numbers code/server.go
+
+* A minimal HTTP server
+
+it's easy 😊
+
+1. Implement a handler function
+
+	func handler(w http.ResponseWriter, r *http.Request)
+
+2. Register the handler function for the given pattern
+
+	http.HandleFunc("/", handler)
+
+3. Start an HTTP server with a given address and handler
+
+	http.ListenAndServe("localhost:8000", nil)
+
+* Handle concurrent requests
+
+Accept incoming connections on the listener, creating a new service goroutine for each.
+
+_c.f._ src/net/http/server.go
+
+.code -numbers code/serve.go
+
+* Handle concurrent requests
+
+To avoid a race condition,
+one goroutine accesses the variable at a time.
+
+* Example
+
+* Example
+
+_c.f._The_Go_Programming_Language_
+— _Alan_A._A._Donovan_·_Brian_W._Kernighan_
+
+▶ PDF ( _$1._Tutorial_ ):
+　[[http://www.gopl.io/][http://www.gopl.io/]]
+　_$1.7_ A Web Server
+
+▶ Example code:
+　[[https://github.com/adonovan/gopl.io/blob/master/ch1/server2/main.go][https://github.com/adonovan/gopl.io/blob/master/ch1/server2/main.go]]
+
+* Question "Global variable"
+
+[[samples/count.go][]]
+
+1. Run HTTP server
+
+	$ go run ./samples/count.go
+
+2. 500 requests with 100 concurrent connections
+
+	$ ab -c 100 -n 500 http://127.0.0.1:8000/
+
+3. Show the number of request counts
+
+	$ curl http://localhost:8000/count
+
+■ Answer
+
+	一. 0 < count < 500
+	二. 0 < count <= 500
+	三. count = 500
+
+👯 👯 👯
+
+
+* Question "Global variable"
+
+[[samples/count.go][]]
+
+■ Answer
+
+	二. 0 < count <= 500
+
+👽 👽 👽
+
+* Protect global variable
+
+[[samples/count_lock.go][]]
+
+Protect the accesses with a mutex.
+
+	$ go run ./samples/count_lock.go
+	$ ab -c 100 -n 500 http://127.0.0.1:8000/
+	$ curl http://localhost:8000/count
+	Count 500
+
+🙆 🙆 🙆
+
+* Maps are not safe for concurrent use
+
+[[samples/map.go][]]
+
+■ <= go v1.5.x
+
+	$ go version
+	go version go1.5.4 darwin/amd64
+	$ go run ./samples/map.go
+	$ ab -c 100 -n 500 http://127.0.0.1:8000/
+
+■ >= go v1.6
+
+	$ go version
+	go version go1.6 darwin/amd64
+	$ go run ./samples/map.go
+	$ ab -c 100 -n 500 http://127.0.0.1:8000/
+
+* Maps are not safe for concurrent use
+
+[[samples/map.go][]]
+
+■ <= go v1.5.x
+
+No craches.
+Can't detect a race condition 😥
+
+■ >= go v1.6
+
+*Changes*
+[[https://golang.org/doc/go1.6#runtime][Go 1.6 Release Notes (about _Runtime_)]]
+
+> As always, if one goroutine is writing to a map, no other goroutine should be reading or writing the map concurrently.
+> If the runtime detects this condition, it prints a diagnosis and crashes the program.
+
+* Protect global `map` variable
+
+[[samples/map_lock.go][]]
+
+Protect the accesses with a mutex.
+
+	$ go run ./samples/map_lock.go
+	$ ab -c 100 -n 500 http://127.0.0.1:8000/
+
+🙆 🙆 🙆
+
+* Why are map operations not defined to be atomic?
+
+_c.f._ [[https://golang.org/doc/faq#atomic_maps][The Go Programming Language #FAQ]]
+
+> the map was probably part of some larger data structure or computation that was already synchronized.
+> requiring that all map operations grab a mutex would slow down most programs and add safety to few.
+
+*This*was*not*an*easy*decision.*
+
+* Techniques
+
+Use `struct` containing a `map` and an `sync.Mutex`,
+and implement get/set/delete methods.
+
+	type Storage struct {
+		mu   sync.Mutex
+		data map[string]string
+	}
+
+Access a map values using these methods.
+
+* Techniques
+
+.code -numbers code/map_with_mutex.go
+
+* FYI
+
+[[https://github.com/streamrail/concurrent-map][streamrail/concurrent-map]]
+
+Sharding the `map`, and decrease the lock wait time.
+
+* Race detector
+
+Go includes a built-in data race detector.
+
+	$ go test -race mypkg    // to test the package
+	$ go run -race mysrc.go  // to run the source file
+	$ go build -race mycmd   // to build the command
+	$ go install -race mypkg // to install the package
+
+▶ example
+
+	$ go run -race ./samples/count.go
+	2016/10/04 16:21:20 Starting server on localhost:8000
+	==================
+	WARNING: DATA RACE
+	Read by goroutine 20:
+	  main.handler()
+	      /repos/src/github.com/yyoshiki41/avoid-race-condition/samples/count.go:20 +0x30
+
+* Typical Data Races
+
+- Unprotected global variable
+- Race on loop counter
+- Accidentally shared variable
+- Primitive unprotected variable
