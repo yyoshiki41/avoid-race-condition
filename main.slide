@@ -73,9 +73,9 @@ _c.f._The_Go_Programming_Language_
 ▶ Example code:
 　[[https://github.com/adonovan/gopl.io/blob/master/ch1/server2/main.go][https://github.com/adonovan/gopl.io/blob/master/ch1/server2/main.go]]
 
-* Question "Global variable"
+* Question
 
-[[samples/count.go][]]
+[[samples/count.go][https://github.com/yyoshiki41/avoid-race-condition/blob/master/samples/count.go]]
 
 1. Run HTTP server
 
@@ -89,18 +89,23 @@ _c.f._The_Go_Programming_Language_
 
 	$ curl http://localhost:8000/count
 
+* Question
+
+[[samples/count.go][https://github.com/yyoshiki41/avoid-race-condition/blob/master/samples/count.go]]
+
 ■ Answer
 
 	一. 0 < count < 500
 	二. 0 < count <= 500
 	三. count = 500
+	四. count => 500
 
 👯 👯 👯
 
 
-* Question "Global variable"
+* Question
 
-[[samples/count.go][]]
+[[samples/count.go][https://github.com/yyoshiki41/avoid-race-condition/blob/master/samples/count.go]]
 
 ■ Answer
 
@@ -108,9 +113,9 @@ _c.f._The_Go_Programming_Language_
 
 👽 👽 👽
 
-* Protect global variable
+* Protect primitive variable
 
-[[samples/count_lock.go][]]
+[[samples/count_lock.go][https://github.com/yyoshiki41/avoid-race-condition/blob/master/samples/count_lock.go]]
 
 Protect the accesses with a mutex.
 
@@ -123,7 +128,7 @@ Protect the accesses with a mutex.
 
 * Maps are not safe for concurrent use
 
-[[samples/map.go][]]
+[[samples/map.go][https://github.com/yyoshiki41/avoid-race-condition/blob/master/samples/map.go]]
 
 ■ <= go v1.5.x
 
@@ -141,7 +146,7 @@ Protect the accesses with a mutex.
 
 * Maps are not safe for concurrent use
 
-[[samples/map.go][]]
+[[samples/map.go][https://github.com/yyoshiki41/avoid-race-condition/blob/master/samples/map.go]]
 
 ■ <= go v1.5.x
 
@@ -158,7 +163,7 @@ Can't detect a race condition 😥
 
 * Protect global `map` variable
 
-[[samples/map_lock.go][]]
+[[samples/map_lock.go][https://github.com/yyoshiki41/avoid-race-condition/blob/master/samples/map_lock.go]]
 
 Protect the accesses with a mutex.
 
@@ -219,7 +224,29 @@ Go includes a built-in data race detector.
 
 * Typical Data Races
 
+[[https://golang.org/doc/articles/race_detector.html][Data Race Detector]]
+
 - Unprotected global variable
+- Primitive unprotected variable
 - Race on loop counter
 - Accidentally shared variable
-- Primitive unprotected variable
+
+* Unprotected global variable
+
+See _"Maps_are_not_safe_for_concurrent_use"_.
+
+* Primitive unprotected variable
+
+Data races can happen on variables of primitive types as well (bool, int, int64, etc.).
+
+See _"Protect_primitive_variable"_.
+
+[Alternatives] Use `atomic` pkg
+
+[[samples/count_atomic.go][https://github.com/yyoshiki41/avoid-race-condition/blob/master/samples/count_atomic.go]]
+
+	atomic.AddInt64(&count, 1)
+
+* Race on loop counter
+
+* Accidentally shared variable
