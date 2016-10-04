@@ -18,13 +18,16 @@ eureka, Inc.
 
 Tech
 
-- Golang
-- Middleware
+- Golang, Middleware
 - AWS
 
 Blog
 
 - [[http://esola.co][esola.co]]
+
+Study
+
+- [[http://eure.connpass.com/event/39936/][The Go Programming Language 輪読会]]
 
 * Presentation
 
@@ -261,7 +264,7 @@ See _"Protect_primitive_variable"_.
 
 [Alternatives] Use `atomic` pkg
 
-[[samples/count_atomic.go][https://github.com/yyoshiki41/avoid-race-condition/blob/master/samples/count_atomic.go]]
+[[https://github.com/yyoshiki41/avoid-race-condition/blob/master/samples/count_atomic.go][samples/count_atomic.go]]
 
 	atomic.AddInt64(&count, 1)
 
