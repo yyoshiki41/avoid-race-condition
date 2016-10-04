@@ -96,7 +96,7 @@ _c.f._The_Go_Programming_Language_
 
 * Question
 
-[[samples/count.go][https://github.com/yyoshiki41/avoid-race-condition/blob/master/samples/count.go]]
+[[https://github.com/yyoshiki41/avoid-race-condition/blob/master/samples/count.go][samples/count.go]]
 
 1. Run HTTP server
 
@@ -112,7 +112,7 @@ _c.f._The_Go_Programming_Language_
 
 * Question
 
-[[samples/count.go][https://github.com/yyoshiki41/avoid-race-condition/blob/master/samples/count.go]]
+[[https://github.com/yyoshiki41/avoid-race-condition/blob/master/samples/count.go][samples/count.go]]
 
 ■ Answer
 
@@ -126,7 +126,7 @@ _c.f._The_Go_Programming_Language_
 
 * Question
 
-[[samples/count.go][https://github.com/yyoshiki41/avoid-race-condition/blob/master/samples/count.go]]
+[[https://github.com/yyoshiki41/avoid-race-condition/blob/master/samples/count.go][samples/count.go]]
 
 ■ Answer
 
@@ -136,7 +136,7 @@ _c.f._The_Go_Programming_Language_
 
 * Protect primitive variable
 
-[[samples/count_lock.go][https://github.com/yyoshiki41/avoid-race-condition/blob/master/samples/count_lock.go]]
+[[https://github.com/yyoshiki41/avoid-race-condition/blob/master/samples/count_lock.go][samples/count_lock.go]]
 
 Protect the accesses with a mutex.
 
@@ -149,7 +149,7 @@ Protect the accesses with a mutex.
 
 * Maps are not safe for concurrent use
 
-[[samples/map.go][https://github.com/yyoshiki41/avoid-race-condition/blob/master/samples/map.go]]
+[[https://github.com/yyoshiki41/avoid-race-condition/blob/master/samples/map.go][samples/map.go]]
 
 ■ <= go v1.5.x
 
@@ -167,7 +167,7 @@ Protect the accesses with a mutex.
 
 * Maps are not safe for concurrent use
 
-[[samples/map.go][https://github.com/yyoshiki41/avoid-race-condition/blob/master/samples/map.go]]
+[[https://github.com/yyoshiki41/avoid-race-condition/blob/master/samples/map.go][samples/map.go]]
 
 ■ <= go v1.5.x
 
@@ -184,7 +184,7 @@ Can't detect a race condition 😥
 
 * Protect global `map` variable
 
-[[samples/map_lock.go][https://github.com/yyoshiki41/avoid-race-condition/blob/master/samples/map_lock.go]]
+[[https://github.com/yyoshiki41/avoid-race-condition/blob/master/samples/map_lock.go][samples/map_lock.go]]
 
 Protect the accesses with a mutex.
 
@@ -195,7 +195,7 @@ Protect the accesses with a mutex.
 
 * Why are map operations not defined to be atomic?
 
-_c.f._ [[https://golang.org/doc/faq#atomic_maps][The Go Programming Language #FAQ]]
+_c.f._ [[The Go Programming Language #FAQ][https://golang.org/doc/faq#atomic_maps]]
 
 > the map was probably part of some larger data structure or computation that was already synchronized.
 > requiring that all map operations grab a mutex would slow down most programs and add safety to few.
